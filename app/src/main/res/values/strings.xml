@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">InternshipMay</string>
+    <string name="login">Login Here</string>
+    <string name="welcome">Welcome Back you\'ve \nbeen missed</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="create_account">Create New Account</string>
+    <string name="login_button">Login</string>
+
 </resources>
