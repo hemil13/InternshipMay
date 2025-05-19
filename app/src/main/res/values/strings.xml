@@ -8,4 +8,7 @@
     <string name="create_account">Create New Account</string>
     <string name="login_button">Login</string>
 
+    <string name="signup">Create an Account</string>
+    <string name="signup_welcome">Create an account so you can explore all the \nexciting jobs</string>
+
 </resources>
