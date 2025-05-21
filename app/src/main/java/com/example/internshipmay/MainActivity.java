@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 hideiv.setVisibility(View.GONE);
                 showiv.setVisibility(View.VISIBLE);
-                password.setTransformationMethod(new PasswordTransformationMethod());
+                password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             }
         });
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 hideiv.setVisibility(View.VISIBLE);
                 showiv.setVisibility(View.GONE);
-                password.setTransformationMethod(new PasswordTransformationMethod());
+                password.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
         });
 

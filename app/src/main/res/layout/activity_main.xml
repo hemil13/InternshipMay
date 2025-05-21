@@ -46,14 +46,15 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
             >
 
             <EditText
                 android:id="@+id/main_password"
                 style="@style/edittext"
                 android:hint="@string/password"
-                android:layout_marginTop="@dimen/_10sdp"
+
                 android:drawableLeft="@drawable/ic_lock"
                 android:drawablePadding="@dimen/_5sdp"
                 android:inputType="textPassword"
@@ -78,7 +79,7 @@
                 android:padding="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_30sdp"
                 android:layout_gravity="center_vertical|end"
-                android:visibility="visible"
+                android:visibility="gone"
                 />
 
 
