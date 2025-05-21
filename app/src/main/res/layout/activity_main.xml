@@ -15,7 +15,6 @@
         android:orientation="vertical">
 
 
-
     <TextView
         style="@style/text_20"
         android:layout_gravity="center"
@@ -38,22 +37,53 @@
         android:id="@+id/main_email"
        style="@style/edittext"
         android:hint="@string/email"
-        android:inputType="textEmailAddress"
         android:drawablePadding="@dimen/_5sdp"
         android:drawableLeft="@drawable/ic_lock"
 
         />
 
 
-    <EditText
-        android:id="@+id/main_password"
-        style="@style/edittext"
-        android:hint="@string/password"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:drawableLeft="@drawable/ic_lock"
-        android:drawablePadding="@dimen/_5sdp"
-        android:inputType="textPassword"
-        />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <EditText
+                android:id="@+id/main_password"
+                style="@style/edittext"
+                android:hint="@string/password"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="@dimen/_5sdp"
+                android:inputType="textPassword"
+                />
+
+            <ImageView
+                android:id="@+id/hideIV"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_eye_closed"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_gravity="center_vertical|end"
+                android:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/showIV"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_eye_open"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_gravity="center_vertical|end"
+                android:visibility="visible"
+                />
+
+
+        </FrameLayout>
+
 
     <TextView
         android:id="@+id/main_forget_password"

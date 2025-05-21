@@ -1,6 +1,7 @@
 package com.example.internshipmay;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -85,10 +86,22 @@ public class SignupActivity extends AppCompatActivity {
                     cnfpassword.setError("Password And Confirm Password Doesn't matches ");
                 }
                 else{
-                    String insertQuery = "INSERT INTO user VALUES(NULL,'"+name.getText().toString()+"','"+email.getText().toString()+"','"+contact.getText().toString()+"','"+password.getText().toString()+"')";
-                    db.execSQL(insertQuery);
 
-                    Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_LONG).show();
+                    String checkEmail = "SELECT * FROM user WHERE email = '"+email.getText().toString()+"' OR '"+contact.getText().toString()+"'";
+                    Cursor cursor = db.rawQuery(checkEmail,null);
+
+                    if(cursor.getCount()>0){
+                        Toast.makeText(SignupActivity.this, "Email or Contact Already Exists", Toast.LENGTH_LONG).show();
+                        onBackPressed();
+                    }
+
+                    else {
+                        String insertQuery = "INSERT INTO user VALUES(NULL,'"+name.getText().toString()+"','"+email.getText().toString()+"','"+contact.getText().toString()+"','"+password.getText().toString()+"')";
+                        db.execSQL(insertQuery);
+                        Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_LONG).show();
+                    }
+
+
 //                    Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
 //                    startActivity(intent);
                 }
