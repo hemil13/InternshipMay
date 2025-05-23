@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class DashboardActivity extends AppCompatActivity {
 
     TextView welcome;
-    Button profile, logout, delete_profile;
+    Button profile, logout, delete_profile, category;
 
     SharedPreferences sp;
 
@@ -32,6 +33,8 @@ public class DashboardActivity extends AppCompatActivity {
         profile = findViewById(R.id.dashboard_profile);
         logout = findViewById(R.id.dashboard_Logout);
         delete_profile = findViewById(R.id.dahsboard_delete_profile);
+
+        category = findViewById(R.id.dashboard_category);
 
         db = openOrCreateDatabase("InternshipMay.db", MODE_PRIVATE, null);
         String tableQuery = "CREATE TABLE IF NOT EXISTS user(userid INTEGER PRIMARY KEY AUTOINCREMENT ,name VARCHAR(50), email VARCHAR(100), contact VARCHAR(15), password VARCHAR(20))";
@@ -64,11 +67,37 @@ public class DashboardActivity extends AppCompatActivity {
         delete_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String deleteProfile = "DELETE FROM user WHERE userid = '"+ConstantSp.userid+"'";
-                db.execSQL(deleteProfile);
-                sp.edit().clear().commit();
 
-                onBackPressed();
+                AlertDialog.Builder alert = new AlertDialog.Builder(DashboardActivity.this);
+                alert.setTitle("Delete Profile");
+                alert.setMessage("Are you sure you want to delete your profile?");
+                alert.setIcon(R.mipmap.ic_launcher);
+
+                alert.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    String deleteProfile = "DELETE FROM user WHERE userid = '"+sp.getString(ConstantSp.userid,"")+"'";
+                    db.execSQL(deleteProfile);
+                    sp.edit().clear().commit();
+                    onBackPressed();
+                });
+
+                alert.setNegativeButton("No", (dialogInterface, i) -> {
+                    alert.setCancelable(true);
+
+                });
+
+                alert.show();
+
+
+
+
+            }
+        });
+
+        category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DashboardActivity.this, CategoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -81,5 +110,14 @@ public class DashboardActivity extends AppCompatActivity {
 //        finishAffinity();
         Intent intent = new Intent(DashboardActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String name = sp.getString(ConstantSp.name, "");
+        welcome.setText("Welcome "+name);
+
     }
 }

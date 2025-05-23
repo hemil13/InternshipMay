@@ -99,18 +99,19 @@ public class ProfileActivity extends AppCompatActivity {
                 }
                 else{
 
-                    String checkEmail = "SELECT * FROM user WHERE userid = '"+ConstantSp.userid+"'";
+                    String checkEmail = "SELECT * FROM user WHERE userid = '"+sp.getString(ConstantSp.userid,"")+"'";
                     Cursor cursor = db.rawQuery(checkEmail,null);
 
                     if(cursor.getCount()>0){
-                        sp.edit().putString(ConstantSp.name, cursor.getString(1)).commit();
-                        sp.edit().putString(ConstantSp.email, cursor.getString(2)).commit();
-                        sp.edit().putString(ConstantSp.contact, cursor.getString(3)).commit();
-                        sp.edit().putString(ConstantSp.password, cursor.getString(4)).commit();
+                        String updateQuery = "UPDATE user SET name='"+name.getText().toString()+"', contact='"+contact.getText().toString()+"',email='"+email.getText().toString()+"',password='"+password.getText().toString()+"' WHERE userid='"+sp.getString(ConstantSp.userid,"")+"'";
+                        db.execSQL(updateQuery);
+
+                        sp.edit().putString(ConstantSp.name, name.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.email, email.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.contact, contact.getText().toString()).commit();
+                        sp.edit().putString(ConstantSp.password, password.getText().toString()).commit();
                         Toast.makeText(ProfileActivity.this, "Update Successfully", Toast.LENGTH_LONG).show();
 
-                        String updateProfile = "UPDATE user SET name = '"+name.getText().toString()+"', email = '"+email.getText().toString()+"', contact = '"+contact.getText().toString()+"', password = '"+password.getText().toString()+"' WHERE userid = '"+ConstantSp.userid+"'";
-                        db.execSQL(updateProfile);
 
                         setData(false);
                     }
@@ -142,10 +143,6 @@ public class ProfileActivity extends AppCompatActivity {
             edit.setVisibility(View.VISIBLE);
             update.setVisibility(View.GONE);
         }
-
-
-
-
 
 
     }
