@@ -17,8 +17,8 @@ public class CategoryActivity extends AppCompatActivity {
 
 
     int[] idArray = {1,2,3};
-    String[] nameArray = {"Shirts", "Tshirts", "Jeans"};
-    int[] imageArray = {R.drawable.shirt, R.drawable.thsirt, R.drawable.jeans};
+    String[] nameArray = {"Clothes", "Electronics", "Books"};
+    int[] imageArray = {R.drawable.clothes, R.drawable.electronics, R.drawable.books};
 
 
     @Override
