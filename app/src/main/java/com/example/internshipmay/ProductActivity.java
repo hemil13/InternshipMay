@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -39,7 +40,7 @@ public class ProductActivity extends AppCompatActivity {
 
         product_recycler = findViewById(R.id.product_recycler);
 
-        product_recycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        product_recycler.setLayoutManager(new LinearLayoutManager(ProductActivity.this));
         product_recycler.setItemAnimator(new DefaultItemAnimator());
 
         sp = getSharedPreferences(ConstantSp.pref, MODE_PRIVATE);
