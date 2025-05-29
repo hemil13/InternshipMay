@@ -51,6 +51,15 @@
         android:text="Delete Profile "
         />
 
+    <Button
+        android:id="@+id/dahsboard_wishlist"
+        style="@style/button"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:backgroundTint="@null"
+        android:text="Wishlist"
+        />
+
+
 
 
 </LinearLayout>

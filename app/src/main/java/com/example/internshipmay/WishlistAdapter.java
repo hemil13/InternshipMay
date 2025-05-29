@@ -1,10 +1,9 @@
 package com.example.internshipmay;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,52 +15,58 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyHolder> {
+public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.MyHolder> {
 
     Context context;
-    ArrayList<ProductList> arrayList;
-
+    ArrayList<WishlistList> arrayList;
     SharedPreferences sp;
-    public ProductAdapter(Context context, ArrayList<ProductList> arrayList) {
 
+    SQLiteDatabase db;
+
+    public WishlistAdapter(Context context, ArrayList<WishlistList> arrayList, SQLiteDatabase db) {
         this.context = context;
         this.arrayList = arrayList;
+        this.db = db;
 
-        sp = context.getSharedPreferences(ConstantSp.pref, MODE_PRIVATE);
+        sp = context.getSharedPreferences(ConstantSp.pref, Context.MODE_PRIVATE);
     }
 
     @NonNull
     @Override
-    public ProductAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
-        return new ProductAdapter.MyHolder(view);
+    public WishlistAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wishlist, parent, false);
+        return new WishlistAdapter.MyHolder(view);
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
-        ImageView image, wishlist;
+    public class MyHolder extends  RecyclerView.ViewHolder{
+        ImageView image, remove;
         TextView name, price;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
-            image = itemView.findViewById(R.id.product_image);
-            name = itemView.findViewById(R.id.product_name);
-            price = itemView.findViewById(R.id.product_price);
-            wishlist = itemView.findViewById(R.id.item_product_cart_wishlist);
+            image = itemView.findViewById(R.id.wishlist_image);
+            name = itemView.findViewById(R.id.wishlist_name);
+            price = itemView.findViewById(R.id.wishlist_price);
+            remove = itemView.findViewById(R.id.custom_wishlist_remove);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WishlistAdapter.MyHolder holder, int position) {
         holder.image.setImageResource(arrayList.get(position).getImage());
         holder.name.setText(arrayList.get(position).getName());
         holder.price.setText(arrayList.get(position).getPrice());
 
-        if(arrayList.get(position).isWishlist()){
-            holder.wishlist.setImageResource(R.drawable.wishlist_fill);
-        } else{
-            holder.wishlist.setImageResource(R.drawable.wishlist_empty);
-        }
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String deleteWishlistQuery = "DELETE FROM wishlist WHERE wishlistid = '"+arrayList.get(position).getWishlistid()+"'";
+                db.execSQL(deleteWishlistQuery);
+                arrayList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

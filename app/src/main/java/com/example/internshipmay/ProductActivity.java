@@ -58,6 +58,10 @@ public class ProductActivity extends AppCompatActivity {
         String productQuery = "CREATE TABLE IF NOT EXISTS product(productid INTEGER PRIMARY KEY AUTOINCREMENT ,subcategoryid INTEGER, name VARCHAR(50), image VARCHAR(100), price VARCHAR(10), description VARCHAR(100))";
         db.execSQL(productQuery);
 
+        String wishlistQuery = "CREATE TABLE IF NOT EXISTS wishlist(wishlistid INTEGER PRIMARY KEY AUTOINCREMENT ,userid INTEGER, productid INTEGER)";
+        db.execSQL(wishlistQuery);
+
+
         product_recycler.setLayoutManager(new LinearLayoutManager(ProductActivity.this));
         product_recycler.setItemAnimator(new DefaultItemAnimator());
 
@@ -85,7 +89,7 @@ public class ProductActivity extends AppCompatActivity {
             if (cursor.getCount()>0){
                 // no need to do anything
             } else{
-                String insertProductQuery = "INSERT INTO product(subcategoryid, name, image, price, description) VALUES('"+subcategoryidArray[i]+"','"+nameArray[i]+"','"+imageArray[i]+"','"+priceArray[i]+"','"+descriptionArray[i]+"')";
+                String insertProductQuery = "INSERT INTO product VALUES(NULL,'"+subcategoryidArray[i]+"','"+nameArray[i]+"','"+imageArray[i]+"','"+priceArray[i]+"','"+descriptionArray[i]+"')";
                 db.execSQL(insertProductQuery);
             }
         }
@@ -103,6 +107,16 @@ public class ProductActivity extends AppCompatActivity {
                 productList.setImage(cursor.getInt(3));
                 productList.setPrice(cursor.getString(4));
                 productList.setDescription(cursor.getString(5));
+
+                String selectWishlistQuery = "SELECT * FROM wishlist WHERE userid = '"+sp.getString(ConstantSp.userid, "")+"' AND productid = '"+cursor.getString(0)+"'";
+                Cursor wishCursor = db.rawQuery(selectWishlistQuery,null);
+                if(wishCursor.getCount()>0){
+                    productList.setWishlist(true);
+                }
+                else{
+                    productList.setWishlist(false);
+                }
+
                 arrayList.add(productList);
             }
             ProductAdapter adapter = new ProductAdapter(ProductActivity.this, arrayList);

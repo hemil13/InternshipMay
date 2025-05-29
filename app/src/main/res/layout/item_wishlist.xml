@@ -19,52 +19,52 @@
         >
 
         <ImageView
-            android:id="@+id/product_image"
+            android:id="@+id/wishlist_image"
             android:layout_gravity="center_vertical"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"/>
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            
-            <LinearLayout
-                android:id="@+id/item_product_wishlist"
-                android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/custom_wishlist_remove"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@drawable/wishlist_fill"
                 android:layout_alignParentRight="true"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/item_product_cart_wishlist"
-                    android:src="@drawable/wishlist_empty"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="30sp"
-                    />
-            </LinearLayout>
+                />
 
             <LinearLayout
-                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_toLeftOf="@id/custom_wishlist_remove"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/product_name"
+                    android:id="@+id/wishlist_name"
                     android:layout_gravity="center_vertical"
                     style="@style/text_20"
                     android:layout_margin="@dimen/_10sdp"
                     />
 
                 <TextView
-                    android:id="@+id/product_price"
+                    android:id="@+id/wishlist_price"
                     android:layout_gravity="center_vertical"
                     style="@style/text_20"
                     android:layout_margin="@dimen/_10sdp"
                     />
+
+
 
             </LinearLayout>
 
 
         </RelativeLayout>
+
 
 
     </LinearLayout>

@@ -1,22 +1,6 @@
 package com.example.internshipmay;
 
-public class ProductList {
-    public int getSubcategoryid() {
-        return subcategoryid;
-    }
-
-    public void setSubcategoryid(int subcategoryid) {
-        this.subcategoryid = subcategoryid;
-    }
-
-    public int getProductid() {
-        return productid;
-    }
-
-    public void setProductid(int productid) {
-        this.productid = productid;
-    }
-
+public class WishlistList {
     public int getImage() {
         return image;
     }
@@ -49,19 +33,30 @@ public class ProductList {
         this.description = description;
     }
 
-    public boolean isWishlist() {
-        return isWishlist;
+    public String getSubcategoryid() {
+        return subcategoryid;
     }
 
-    public void setWishlist(boolean wishlist) {
-        isWishlist = wishlist;
+    public void setSubcategoryid(String subcategoryid) {
+        this.subcategoryid = subcategoryid;
     }
 
-    int subcategoryid, productid, image;
-    String name, price, description;
-    boolean isWishlist;
+    public String getWishlistid() {
+        return wishlistid;
+    }
 
+    public void setWishlistid(String wishlistid) {
+        this.wishlistid = wishlistid;
+    }
 
+    public String getProductid() {
+        return productid;
+    }
 
+    public void setProductid(String productid) {
+        this.productid = productid;
+    }
 
+    int image;
+    String name, price, description, subcategoryid, wishlistid, productid;
 }

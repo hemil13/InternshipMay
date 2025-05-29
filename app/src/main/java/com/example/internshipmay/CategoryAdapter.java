@@ -87,6 +87,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyHold
     public int getItemCount() {
         return arrayList.size();
     }
-
-
 }
