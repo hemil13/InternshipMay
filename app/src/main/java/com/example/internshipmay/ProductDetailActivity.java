@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,14 +19,21 @@ import androidx.core.view.WindowInsetsCompat;
 public class ProductDetailActivity extends AppCompatActivity {
 
 
-    ImageView image, wishlist, cart;
-    TextView name, price, description;
+    ImageView image, wishlist, cart, cart_add, cart_minus;
+    TextView name, price, description, qty;
 
     SharedPreferences sp;
 
     SQLiteDatabase db;
 
     boolean isWishlist = false;
+
+    LinearLayout cart_layout;
+
+
+
+    int iqty = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         String wishlistQuery = "CREATE TABLE IF NOT EXISTS wishlist(wishlistid INTEGER PRIMARY KEY AUTOINCREMENT ,userid INTEGER, productid INTEGER)";
         db.execSQL(wishlistQuery);
 
+        String cartQuery = "CREATE TABLE IF NOT EXISTS cart(cartid INTEGER PRIMARY KEY AUTOINCREMENT ,orderid INTEGER(10),userid INTEGER, productid INTEGER, qty INTEGER(3), price VARCHAR(10), TotalPrice VARCHAR(10))";
+        db.execSQL(cartQuery);
+
 
 
 
@@ -60,7 +71,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         price = findViewById(R.id.product_detail_price);
         description = findViewById(R.id.product_detail_description);
         wishlist = findViewById((R.id.product_detail_wishlist));
-//        cart = findViewById(R.id.product_detail_cart);
+        cart = findViewById(R.id.product_detail_cart);
+        cart_layout = findViewById(R.id.product_detail_cart_layout);
+        cart_add = findViewById(R.id.product_detail_qty_add);
+        cart_minus = findViewById(R.id.product_detail_qty_substract);
+        qty = findViewById(R.id.product_detail_cart_qty);
+
+
+
 
         image.setImageResource(sp.getInt(ConstantSp.prod_image, 0));
         name.setText(sp.getString(ConstantSp.prod_name, ""));
@@ -108,6 +126,42 @@ public class ProductDetailActivity extends AppCompatActivity {
                     isWishlist = true;
 
                 }
+            }
+        });
+
+
+
+
+
+        String selectCartQuery = "SELECT * FROM cart WHERE userid = '"+sp.getString(ConstantSp.userid, "")+"' AND productid = '"+sp.getString(ConstantSp.productid, "")+"' AND orderid = '0'";
+        Cursor cartCursor = db.rawQuery(selectCartQuery,null);
+        if(cartCursor.getCount()>0){
+            while(cartCursor.moveToNext()){
+                iqty = Integer.parseInt(cartCursor.getString(4));
+                qty.setText(String.valueOf(iqty));
+            }
+            cart.setVisibility(View.GONE);
+            cart_layout.setVisibility(View.VISIBLE);
+        }
+        else{
+            cart.setVisibility(View.VISIBLE);
+            cart_layout.setVisibility(View.GONE);
+        }
+
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iqty = 3;
+                int iPrice = Integer.parseInt(sp.getString(ConstantSp.prod_price,""));
+                int iTotalPrice = iqty*iPrice;
+                String insertCartQuery = "INSERT INTO cart VALUES(NULL,'0','"+sp.getString(ConstantSp.userid, "")+"','"+sp.getString(ConstantSp.productid, "")+"','"+iqty+"','"+iPrice+"','"+iTotalPrice+"')";
+                db.execSQL(insertCartQuery);
+                Toast.makeText(ProductDetailActivity.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                cart.setVisibility(View.GONE);
+                cart_layout.setVisibility(View.VISIBLE);
+                qty.setText(String.valueOf(iqty));
+
             }
         });
 

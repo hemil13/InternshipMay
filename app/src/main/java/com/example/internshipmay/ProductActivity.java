@@ -28,7 +28,7 @@ public class ProductActivity extends AppCompatActivity {
     String[] nameArray = {"Redmi", "Oneplus", "Noise", "AirpodsMax"};
     int[] imageArray = {R.drawable.redmi, R.drawable.oneplus, R.drawable.noise, R.drawable.airpods_max};
 
-    String[] priceArray = {"$100", "$200", "$300", "$400"};
+    String[] priceArray = {"100", "200", "300", "400"};
     String [] descriptionArray = {"This is a description", "This is a description", "This is a description", "This is a description"};
 
     SharedPreferences sp;
