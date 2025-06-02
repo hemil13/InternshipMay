@@ -59,6 +59,14 @@
         android:text="Wishlist"
         />
 
+    <Button
+        android:id="@+id/dahsboard_cart"
+        style="@style/button"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:backgroundTint="@null"
+        android:text="Cart"
+        />
+
 
 
 

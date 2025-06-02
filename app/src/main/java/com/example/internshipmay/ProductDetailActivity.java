@@ -19,8 +19,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class ProductDetailActivity extends AppCompatActivity {
 
 
-    ImageView image, wishlist, cart, cart_add, cart_minus;
-    TextView name, price, description, qty;
+    ImageView image, wishlist, cart, cart_add, cart_minus, plus, minus;
+    TextView name, price, description, qty, carttotal;
 
     SharedPreferences sp;
 
@@ -76,6 +76,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         cart_add = findViewById(R.id.product_detail_qty_add);
         cart_minus = findViewById(R.id.product_detail_qty_substract);
         qty = findViewById(R.id.product_detail_cart_qty);
+        carttotal = findViewById(R.id.product_detail_carttotal);
+        plus = findViewById(R.id.product_detail_qty_add);
+        minus = findViewById(R.id.product_detail_qty_substract);
 
 
 
@@ -152,7 +155,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iqty = 3;
+                iqty = 1;
                 int iPrice = Integer.parseInt(sp.getString(ConstantSp.prod_price,""));
                 int iTotalPrice = iqty*iPrice;
                 String insertCartQuery = "INSERT INTO cart VALUES(NULL,'0','"+sp.getString(ConstantSp.userid, "")+"','"+sp.getString(ConstantSp.productid, "")+"','"+iqty+"','"+iPrice+"','"+iTotalPrice+"')";
@@ -166,7 +169,60 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
+        String cartTotalQuery = "SELECT SUM(TotalPrice) FROM cart WHERE userid = '"+sp.getString(ConstantSp.userid, "")+"' AND orderid = '0'";
+        Cursor cartTotalCursor = db.rawQuery(cartTotalQuery,null);
 
+        if(cartTotalCursor.getCount()>0){
+            while(cartTotalCursor.moveToNext()){
+                carttotal.setText(ConstantSp.ruppees+cartTotalCursor.getString(0));
+            }
+        }
+
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iqty++;
+                updateMethod(iqty,"update");
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iqty--;
+                if(iqty==0){
+                    updateMethod(iqty, "Delete");
+                    cart_layout.setVisibility(View.GONE);
+                    cart.setVisibility(View.VISIBLE);
+                    return;
+                }
+                else{
+                    updateMethod(iqty, "update");
+                }
+            }
+        });
+    }
+
+    private void updateMethod(int iqty, String type) {
+        int iProductAmount = Integer.parseInt(sp.getString(ConstantSp.prod_price,""));
+        int iTotalPrice = iqty*iProductAmount;
+
+        if(type.equalsIgnoreCase("update")){
+            String updateCartQty = "UPDATE cart SET qty = '"+iqty+"', TotalPrice = '"+iTotalPrice+"' WHERE userid = '"+sp.getString(ConstantSp.userid, "")+"' AND productid = '"+sp.getString(ConstantSp.productid, "")+"' AND orderid = '0'";
+            db.execSQL(updateCartQty);
+            qty.setText(String.valueOf(iqty));
+            Toast.makeText(ProductDetailActivity.this, "Cart Updated", Toast.LENGTH_SHORT).show();
+        }
+
+        else{
+            String deleteCartQty = "DELETE FROM cart WHERE userid = '"+sp.getString(ConstantSp.userid, "")+"' AND productid = '"+sp.getString(ConstantSp.productid, "")+"' AND orderid = '0'";
+            db.execSQL(deleteCartQty);
+//            qty.setText(String.valueOf(iqty));
+            cart_layout.setVisibility(View.GONE);
+            cart.setVisibility(View.VISIBLE);
+            Toast.makeText(ProductDetailActivity.this, "Removed From Cart", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
