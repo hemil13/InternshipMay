@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CartActivity extends AppCompatActivity {
 
     CardView cart_bottom_layout;
-    TextView totalprice;
+    public static TextView totalprice;
     Button checkout;
 
     RelativeLayout cart_bottom_layout_container;
@@ -34,7 +34,7 @@ public class CartActivity extends AppCompatActivity {
 
     ArrayList<CartList> arrayList;
 
-    Integer iCartTotal = 0;
+    public static int iCartTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

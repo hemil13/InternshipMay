@@ -3,12 +3,14 @@ package com.example.internshipmay;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +22,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
     ArrayList<CartList> arraylist;
     SQLiteDatabase db;
     SharedPreferences sp;
+    int iqty = 0;
+    ImageView cart, cart_layout;
     public CartAdapter(Context Context, ArrayList<CartList> arrayList, SQLiteDatabase db) {
         this.Context = Context;
         this.arraylist = arrayList;
@@ -74,7 +78,73 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
         });
 
 
+        holder.plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iqty  = Integer.parseInt(arraylist.get(position).getQty());
+                iqty++;
+                updateMethod(iqty,"plus", position);
+            }
+        });
+
+        holder.minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iqty--;
+                if(iqty==0){
+                    updateMethod(iqty, "Delete", position);
+                }
+                else{
+                    updateMethod(iqty, "minus", position);
+                }
+            }
+        });
     }
+
+
+    private void updateMethod(int iqty, String type, int position) {
+        int iProductAmount = Integer.parseInt(arraylist.get(position).getPrice());
+        int iTotalPrice = iqty*iProductAmount;
+
+        if(type.equalsIgnoreCase("plus") || type.equalsIgnoreCase("minus")){
+            String updateCartQty = "UPDATE cart SET qty = '"+iqty+"', TotalPrice = '"+iTotalPrice+"' WHERE  cartid = '"+arraylist.get(position).getCartid()+"'";
+            db.execSQL(updateCartQty);
+
+            if(type.equalsIgnoreCase("plus")){
+                CartActivity.iCartTotal += iProductAmount;
+            }
+            else {
+                CartActivity.iCartTotal -= iProductAmount;
+            }
+            CartActivity.totalprice.setText("Total = " + ConstantSp.ruppees + CartActivity.iCartTotal);
+
+            CartList list = new CartList();
+            list.setCartid(arraylist.get(position).getCartid());
+            list.setProductid(arraylist.get(position).getProductid());
+            list.setSubcategoryid(arraylist.get(position).getSubcategoryid());
+            list.setName(arraylist.get(position).getName());
+            list.setImage(arraylist.get(position).getImage());
+            list.setPrice(arraylist.get(position).getPrice());
+            list.setDescription(arraylist.get(position).getDescription());
+            list.setQty(arraylist.get(position).getQty());
+            list.setTotalPrice(arraylist.get(position).getTotalPrice());
+            arraylist.set(position, list);
+            notifyDataSetChanged();
+
+        }
+        else{
+            String deleteCartQty = "DELETE FROM cart WHERE cartid = '"+arraylist.get(position).getCartid()+"'";
+            db.execSQL(deleteCartQty);
+//            qty.setText(String.valueOf(iqty));
+            arraylist.remove(position);
+            notifyDataSetChanged();
+            Toast.makeText(Context, "Removed From Cart", Toast.LENGTH_SHORT).show();
+            CartActivity.iCartTotal -= iProductAmount;
+            CartActivity.totalprice.setText("Total = " + ConstantSp.ruppees + CartActivity.iCartTotal);
+        }
+    }
+
+
 
     @Override
     public int getItemCount() {
