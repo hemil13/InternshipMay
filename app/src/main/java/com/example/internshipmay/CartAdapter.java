@@ -100,8 +100,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
             }
         });
     }
-
-
     private void updateMethod(int iqty, String type, int position) {
         int iProductAmount = Integer.parseInt(arraylist.get(position).getPrice());
         int iTotalPrice = iqty*iProductAmount;
@@ -143,8 +141,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyHolder> {
             CartActivity.totalprice.setText("Total = " + ConstantSp.ruppees + CartActivity.iCartTotal);
         }
     }
-
-
 
     @Override
     public int getItemCount() {

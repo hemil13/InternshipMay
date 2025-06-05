@@ -105,6 +105,7 @@
             </LinearLayout>
             
             <Button
+                android:id="@+id/pay_now"
                 style="@style/button"
                 app:backgroundTint="@null"
                 android:text="Pay Now"

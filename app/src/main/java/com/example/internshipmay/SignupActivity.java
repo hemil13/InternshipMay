@@ -100,8 +100,6 @@ public class SignupActivity extends AppCompatActivity {
                         db.execSQL(insertQuery);
                         Toast.makeText(SignupActivity.this, "Signup Successfully", Toast.LENGTH_LONG).show();
                     }
-
-
 //                    Intent intent = new Intent(SignupActivity.this, DashboardActivity.class);
 //                    startActivity(intent);
                 }
